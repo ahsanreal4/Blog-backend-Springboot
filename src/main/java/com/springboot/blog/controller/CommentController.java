@@ -1,7 +1,6 @@
 package com.springboot.blog.controller;
 
 import com.springboot.blog.dto.comment.CommentDto;
-import com.springboot.blog.dto.post.PostDto;
 import com.springboot.blog.service.CommentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

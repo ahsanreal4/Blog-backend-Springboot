@@ -8,6 +8,7 @@ import com.springboot.blog.model.Post;
 import com.springboot.blog.repository.CommentRepository;
 import com.springboot.blog.repository.PostRepository;
 import com.springboot.blog.service.CommentService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +20,12 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
+    private final ModelMapper mapper;
 
-    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository, ModelMapper mapper) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
+        this.mapper = mapper;
     }
 
     @Override
