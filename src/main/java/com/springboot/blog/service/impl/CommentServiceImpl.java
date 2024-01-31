@@ -105,23 +105,12 @@ public class CommentServiceImpl implements CommentService {
 
     // convert Entity to DTO
     private CommentDto mapToDto(Comment comment){
-        CommentDto commentDto = new CommentDto();
-        commentDto.setName(comment.getName());
-        commentDto.setId(comment.getId());
-        commentDto.setBody(comment.getBody());
-        commentDto.setEmail(comment.getEmail());
-
-        return commentDto;
+        return mapper.map(comment, CommentDto.class);
     }
 
     // convert DTO to Entity
     private Comment mapToEntity(CommentDto commentDto){
-        Comment comment = new Comment();
-        comment.setBody(commentDto.getBody());
-        comment.setEmail(commentDto.getEmail());
-        comment.setName(commentDto.getName());
-
-        return comment;
+        return mapper.map(commentDto, Comment.class);
     }
 
     // Check if comment belongs to the post

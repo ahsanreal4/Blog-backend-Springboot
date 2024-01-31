@@ -6,6 +6,7 @@ import com.springboot.blog.exception.ResourceNotFoundException;
 import com.springboot.blog.model.Post;
 import com.springboot.blog.repository.PostRepository;
 import com.springboot.blog.service.PostService;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +19,11 @@ import java.util.stream.Collectors;
 @Service
 public class PostServiceImpl implements PostService {
     private PostRepository postRepository;
+    private ModelMapper mapper;
 
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository, ModelMapper mapper) {
         this.postRepository = postRepository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -89,22 +92,11 @@ public class PostServiceImpl implements PostService {
 
     // convert Entity to DTO
     private PostDto mapToDto(Post post){
-        PostDto postDto = new PostDto();
-        postDto.setTitle((post.getTitle()));
-        postDto.setId(post.getId());
-        postDto.setContent(post.getContent());
-        postDto.setDescription(post.getDescription());
-
-        return postDto;
+        return mapper.map(post, PostDto.class);
     }
 
     // convert DTO to Entity
     private Post mapToEntity(PostDto postDto){
-        Post post = new Post();
-        post.setTitle((postDto.getTitle()));
-        post.setContent(postDto.getContent());
-        post.setDescription(postDto.getDescription());
-
-        return post;
+        return  mapper.map(postDto, Post.class);
     }
 }

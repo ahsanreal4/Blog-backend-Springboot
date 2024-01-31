@@ -1,11 +1,11 @@
 package com.springboot.blog.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+// Remember not setting @Data directly or mapper won't wor
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 
