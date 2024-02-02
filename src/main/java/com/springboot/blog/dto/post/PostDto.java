@@ -2,6 +2,7 @@ package com.springboot.blog.dto.post;
 
 import com.springboot.blog.dto.comment.CommentDto;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -24,4 +25,7 @@ public class PostDto {
     @NotEmpty
     private String content;
     private Set<CommentDto> comments;
+
+    @NotNull
+    private Long categoryId;
 }

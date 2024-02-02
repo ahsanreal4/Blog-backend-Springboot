@@ -4,10 +4,14 @@ import com.springboot.blog.dto.post.PostDto;
 import com.springboot.blog.dto.post.PostResponseDto;
 import com.springboot.blog.service.PostService;
 import com.springboot.blog.utils.constants.PostConstants;
+import com.springboot.blog.utils.constants.UserRoles;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -20,6 +24,7 @@ public class PostController {
     }
 
     // create blog post
+    @PreAuthorize(UserRoles.HAS_ROLE_ADMIN)
     @PostMapping()
     public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto){
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
@@ -43,15 +48,23 @@ public class PostController {
     }
 
     // update post by id
+    @PreAuthorize(UserRoles.HAS_ROLE_ADMIN)
     @PutMapping("/{id}")
     public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto, @PathVariable(name = "id") long id){
         return new ResponseEntity<>(postService.updatePost(postDto, id), HttpStatus.OK);
     }
 
     // delete post by id
+    @PreAuthorize(UserRoles.HAS_ROLE_ADMIN)
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePost(@PathVariable(name = "id") long id){
         postService.deletePost(id);
         return new ResponseEntity<>("Post deleted successfully", HttpStatus.OK);
+    }
+
+    // get posts by category id
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<PostDto>> getPostsByCategoryId(@PathVariable(name = "categoryId") long categoryId){
+        return ResponseEntity.ok(postService.getPostsByCategory(categoryId));
     }
 }
