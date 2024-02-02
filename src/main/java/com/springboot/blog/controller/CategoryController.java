@@ -3,16 +3,23 @@ package com.springboot.blog.controller;
 import com.springboot.blog.dto.post.CategoryDto;
 import com.springboot.blog.service.CategoryService;
 import com.springboot.blog.utils.constants.UserRoles;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api/categories")
+@SecurityRequirement(
+        name = "Bear Authentication"
+)
+@Tag(
+        name = "Category"
+)
 public class CategoryController {
 
     private CategoryService categoryService;

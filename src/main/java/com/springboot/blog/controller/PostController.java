@@ -5,6 +5,8 @@ import com.springboot.blog.dto.post.PostResponseDto;
 import com.springboot.blog.service.PostService;
 import com.springboot.blog.utils.constants.PostConstants;
 import com.springboot.blog.utils.constants.UserRoles;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
+@SecurityRequirement(
+        name = "Bear Authentication"
+)
+@Tag(
+        name = "Post"
+)
 public class PostController {
 
     private final PostService postService;
