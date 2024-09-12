@@ -2,17 +2,20 @@ package com.springboot.blog.controller;
 
 import com.springboot.blog.dto.post.PostDto;
 import com.springboot.blog.dto.post.PostResponseDto;
+import com.springboot.blog.dto.post.SinglePostDto;
 import com.springboot.blog.service.PostService;
+import com.springboot.blog.service.StorageService;
 import com.springboot.blog.utils.constants.PostConstants;
 import com.springboot.blog.utils.constants.UserRoles;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -27,15 +30,34 @@ public class PostController {
 
     private final PostService postService;
 
-    public PostController(PostService postService) {
+    public PostController(PostService postService, StorageService storageService) {
         this.postService = postService;
     }
 
     // create blog post
     @PreAuthorize(UserRoles.HAS_ROLE_ADMIN)
     @PostMapping()
-    public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto){
-        return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
+    public ResponseEntity<PostDto> createPost(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("title") String title,
+            @RequestParam("description") String description,
+            @RequestParam("content") String content,
+            @RequestParam("categoryId") long categoryId
+    )
+    {
+        String nowTime = Long.toString(new Date().getTime());
+        String fileName = nowTime + "_" + file.getOriginalFilename();
+
+        PostDto dto = new PostDto();
+        dto.setCategoryId(categoryId);
+        dto.setTitle(title);
+        dto.setContent(content);
+        dto.setDescription(description);
+        dto.setFileName(fileName);
+
+        PostDto created = postService.createPost(dto, file);
+
+        return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
     // get all blog posts
@@ -51,7 +73,7 @@ public class PostController {
 
     // get post by id
     @GetMapping("/{id}")
-    public ResponseEntity<PostDto> getPostById(@PathVariable(name = "id") long id){
+    public ResponseEntity<SinglePostDto> getPostById(@PathVariable(name = "id") long id){
         return ResponseEntity.ok(postService.getPostById(id));
     }
 
