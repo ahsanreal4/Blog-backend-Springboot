@@ -47,6 +47,8 @@ public class AuthController {
     public ResponseEntity<UserDto> getUserProfile(HttpServletRequest request){
         String token = request.getHeader("Authorization");
 
+        if (token == null) throw new ApiException(HttpStatus.BAD_REQUEST, "jwt token not found");
+
         String[] tokenSplit = token.split(" ");
 
         if (tokenSplit.length < 2) {
