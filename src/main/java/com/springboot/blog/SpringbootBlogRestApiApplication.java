@@ -1,11 +1,9 @@
 package com.springboot.blog;
 
-import com.springboot.blog.service.StorageService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -32,13 +30,4 @@ public class SpringbootBlogRestApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootBlogRestApiApplication.class, args);
 	}
-
-	@Bean
-	CommandLineRunner init(StorageService storageService) {
-		return (args) -> {
-			storageService.deleteAll();
-			storageService.init();
-		};
-	}
-
 }

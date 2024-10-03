@@ -67,11 +67,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public StorageProperties StorageProperties() {
-        return new StorageProperties();
-    }
-
 
 //    @Bean
 //    public UserDetailsService userDetailsService(){

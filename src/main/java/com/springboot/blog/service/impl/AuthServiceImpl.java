@@ -1,5 +1,6 @@
 package com.springboot.blog.service.impl;
 
+import com.springboot.blog.dto.UserDto;
 import com.springboot.blog.dto.auth.LoginDto;
 import com.springboot.blog.dto.auth.RegisterDto;
 import com.springboot.blog.exception.ApiException;
@@ -10,6 +11,7 @@ import com.springboot.blog.repository.UserRepository;
 import com.springboot.blog.security.JwtTokenProvider;
 import com.springboot.blog.service.AuthService;
 import com.springboot.blog.utils.constants.UserRoles;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,13 +31,18 @@ public class AuthServiceImpl implements AuthService {
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
     private JwtTokenProvider jwtTokenProvider;
+    private ModelMapper mapper;
 
-    public AuthServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
+    public AuthServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository,
+                           PasswordEncoder passwordEncoder,
+                           JwtTokenProvider jwtTokenProvider,
+                           ModelMapper mapper) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.mapper = mapper;
     }
 
     @Override
@@ -74,5 +81,15 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
 
         return "User registered successfully!";
+    }
+
+    @Override
+    public UserDto getProfile(String token) {
+        String username = this.jwtTokenProvider.getUsername(token);
+
+        User user = userRepository.findByUsernameOrEmail(username, username).
+                orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "user does not exist"));
+
+        return mapper.map(user, UserDto.class);
     }
 }

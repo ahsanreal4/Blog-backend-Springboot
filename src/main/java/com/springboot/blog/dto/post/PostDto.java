@@ -25,9 +25,6 @@ public class PostDto {
     @NotEmpty
     private String content;
 
-    @NotEmpty
-    private String fileName;
-
     private Set<CommentDto> comments;
 
     @NotNull

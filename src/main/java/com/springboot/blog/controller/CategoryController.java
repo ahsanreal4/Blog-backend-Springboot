@@ -2,12 +2,10 @@ package com.springboot.blog.controller;
 
 import com.springboot.blog.dto.post.CategoryDto;
 import com.springboot.blog.service.CategoryService;
-import com.springboot.blog.utils.constants.UserRoles;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,7 +27,6 @@ public class CategoryController {
     }
 
     // Add Category
-    @PreAuthorize(UserRoles.HAS_ROLE_ADMIN)
     @PostMapping
     public ResponseEntity<CategoryDto> addCategory(@RequestBody CategoryDto categoryDto){
         CategoryDto savedCategory = categoryService.addCategory(categoryDto);
@@ -49,7 +46,6 @@ public class CategoryController {
     }
 
     // Update Category by id
-    @PreAuthorize(UserRoles.HAS_ROLE_ADMIN)
     @PutMapping("/{categoryId}")
     public ResponseEntity<CategoryDto> updateCategory(@RequestBody CategoryDto categoryDto, @PathVariable(name = "categoryId") Long id){
         CategoryDto updatedCategory = categoryService.updateCategory(id, categoryDto);
@@ -57,7 +53,6 @@ public class CategoryController {
     }
 
     // Delete Category by id
-    @PreAuthorize(UserRoles.HAS_ROLE_ADMIN)
     @DeleteMapping("/{categoryId}")
     public ResponseEntity<String> deleteCategory(@PathVariable(name = "categoryId") Long id){
         categoryService.deleteCategoryById(id);
