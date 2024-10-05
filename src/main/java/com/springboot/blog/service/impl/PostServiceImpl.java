@@ -4,6 +4,7 @@ import com.springboot.blog.dto.post.PostDto;
 import com.springboot.blog.dto.post.PostResponseDto;
 import com.springboot.blog.exception.ResourceNotFoundException;
 import com.springboot.blog.model.Category;
+import com.springboot.blog.model.Comment;
 import com.springboot.blog.model.Post;
 import com.springboot.blog.repository.CategoryRepository;
 import com.springboot.blog.repository.PostRepository;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -75,12 +77,15 @@ public class PostServiceImpl implements PostService {
     public PostDto getPostById(long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
 
+        Set<Comment> comments = post.getComments();
+
         PostDto dto = new PostDto();
         dto.setId(post.getId());
         dto.setTitle(post.getTitle());
         dto.setDescription(post.getDescription());
         dto.setContent(post.getContent());
         dto.setCategoryId(post.getCategory().getId());
+        post.setComments(comments);
 
         return dto;
     }
