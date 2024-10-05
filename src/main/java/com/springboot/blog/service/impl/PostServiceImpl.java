@@ -1,5 +1,6 @@
 package com.springboot.blog.service.impl;
 
+import com.springboot.blog.dto.comment.CommentDto;
 import com.springboot.blog.dto.post.PostDto;
 import com.springboot.blog.dto.post.PostResponseDto;
 import com.springboot.blog.exception.ResourceNotFoundException;
@@ -79,13 +80,15 @@ public class PostServiceImpl implements PostService {
 
         Set<Comment> comments = post.getComments();
 
+        Set<CommentDto> commentDtos = comments.stream().map(comment -> mapper.map(comment, CommentDto.class)).collect(Collectors.toSet());
+
         PostDto dto = new PostDto();
         dto.setId(post.getId());
         dto.setTitle(post.getTitle());
         dto.setDescription(post.getDescription());
         dto.setContent(post.getContent());
         dto.setCategoryId(post.getCategory().getId());
-        post.setComments(comments);
+        dto.setComments(commentDtos);
 
         return dto;
     }
