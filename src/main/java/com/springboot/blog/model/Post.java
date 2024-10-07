@@ -28,8 +28,6 @@ public class Post {
     private String title;
 
     @Column(nullable = false)
-    private String description;
-    @Column(nullable = false)
     private String content;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -23,9 +23,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements PostService {
-    private PostRepository postRepository;
-    private ModelMapper mapper;
-    private CategoryRepository categoryRepository;
+    private final PostRepository postRepository;
+    private final ModelMapper mapper;
+    private final CategoryRepository categoryRepository;
 
     public PostServiceImpl(PostRepository postRepository, ModelMapper mapper, CategoryRepository categoryRepository) {
         this.postRepository = postRepository;
@@ -85,7 +85,6 @@ public class PostServiceImpl implements PostService {
         PostDto dto = new PostDto();
         dto.setId(post.getId());
         dto.setTitle(post.getTitle());
-        dto.setDescription(post.getDescription());
         dto.setContent(post.getContent());
         dto.setCategoryId(post.getCategory().getId());
         dto.setComments(commentDtos);
@@ -101,7 +100,6 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", postDto.getCategoryId()));
 
         post.setTitle(postDto.getTitle());
-        post.setDescription(postDto.getDescription());
         post.setContent(postDto.getContent());
         post.setCategory(category);
 
